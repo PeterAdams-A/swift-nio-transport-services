@@ -275,16 +275,8 @@ extension NIOTSConnectionBootstrap {
     
     @usableFromInline
     func channelOption(_ option: NIOTCPShorthandOption) -> NIOTSConnectionBootstrap {
-        let applier = NIOTSConnectionBootstrap_Applier(contained: self)
-        return option.applyOptionDefaultMapping(applier).contained
-    }
-    
-    fileprivate struct NIOTSConnectionBootstrap_Applier : NIOChannelOptionAppliable {
-        var contained : NIOTSConnectionBootstrap
-        
-        func applyOption<Option: ChannelOption>(_ option: Option, value: Option.Value) -> NIOTSConnectionBootstrap_Applier {
-            return NIOTSConnectionBootstrap_Applier(contained: contained.channelOption(option, value: value))
-        }
+        self.channelOptions = option.applyOptionDefaultMapping(to: self.channelOptions)
+        return self
     }
 }
 #endif
